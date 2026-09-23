@@ -1,0 +1,205 @@
+// Version: 4.0.0
+type AccessControlState__201339279 =
+  {
+    var adminAssigned : Bool;
+    userRoles : Map__230067015<Principal, UserRole__91647283>
+  };
+type Data__44217153<K, V> = {var count : Nat__227979830; kvs : [var ?(K, V)]};
+type Domicilio__983849745 =
+  {
+    address : Text;
+    arrivalTime : Text;
+    departureTime : Text;
+    timeAtDomicile : Minutes__626236977
+  };
+type Domicilio__992855519 =
+  {
+    address : Text;
+    arrivalTime : Text;
+    departureTime : Text;
+    timeAtDomicile : Minutes__810978648
+  };
+type Internal__283199666<K, V> =
+  {children : [var ?Node__204828119<K, V>]; data : Data__44217153<K, V>};
+type Kilometers__193750192 = Kilometers__357906976;
+type Kilometers__357906976 = Float;
+type Kilometers__677260180 = Float;
+type Leaf__598469445<K, V> = {data : Data__44217153<K, V>};
+type Map__230067015<K, V> = Map__405889023<K, V>;
+type Map__405889023<K, V> = Map__603270868<K, V>;
+type Map__603270868<K, V> =
+  {var root : Node__204828119<K, V>; var size : Nat__227979830};
+type Minutes__608579981 = Float;
+type Minutes__626236977 = Float;
+type Minutes__810978648 = Minutes__608579981;
+type MobileId__167725735 = MobileId__339015241;
+type MobileId__339015241 = Nat;
+type MobileId__97084550 = Nat;
+type MobileId__976316653 = MobileId__339015241;
+type MobileStatus__164502484 = {#offline; #online};
+type MobileStatus__627927959 = {#offline; #online};
+type Mobile__310070019 =
+  {
+    id : MobileId__976316653;
+    lastLatitude : ?Float;
+    lastLongitude : ?Float;
+    lastUpdate : ?Timestamp__168099544;
+    mobileIdentifier : Text;
+    officialName : Text;
+    password : Text;
+    principal : ?Principal;
+    serviceType : Text;
+    status : MobileStatus__627927959;
+    username : Text
+  };
+type Mobile__901484413 =
+  {
+    id : MobileId__97084550;
+    lastLatitude : ?Float;
+    lastLongitude : ?Float;
+    lastUpdate : ?Timestamp__310406396;
+    mobileIdentifier : Text;
+    officialName : Text;
+    password : Text;
+    principal : ?Principal;
+    serviceType : Text;
+    status : MobileStatus__164502484;
+    username : Text
+  };
+type Nat__227979830 = Nat__920180692;
+type Nat__920180692 = Nat;
+type NewActor__619974250 =
+  {
+    accessControlState : AccessControlState__201339279;
+    mobiles : Map__230067015<MobileId__97084550, Mobile__901484413>;
+    rates : {var current : Rates__438100578};
+    routes : Map__230067015<RouteId__454688930, Route__571698153>;
+    services : Map__230067015<ServiceId__641272165, Service__103523136>
+  };
+type Node__204828119<K, V> =
+  {#internal : Internal__283199666<K, V>; #leaf : Leaf__598469445<K, V>};
+type Pesos__393896900 = Nat;
+type Pesos__425401803 = Pesos__818994016;
+type Pesos__818994016 = Nat;
+type Rates__19350627 =
+  {
+    bajadaDeBandera : Pesos__425401803;
+    porKilometro : Pesos__425401803;
+    porMinuto : Pesos__425401803;
+    porTag : Pesos__425401803
+  };
+type Rates__438100578 =
+  {
+    bajadaDeBandera : Pesos__393896900;
+    porKilometro : Pesos__393896900;
+    porMinuto : Pesos__393896900;
+    porTag : Pesos__393896900
+  };
+type RouteId__1014512787 = RouteId__594135611;
+type RouteId__454688930 = Nat;
+type RouteId__594135611 = Nat;
+type Route__359719741 =
+  {
+    endedAt : ?Timestamp__470065763;
+    id : RouteId__1014512787;
+    mobileId : MobileId__167725735;
+    officialName : Text;
+    serviceType : Text;
+    startedAt : Timestamp__470065763
+  };
+type Route__571698153 =
+  {
+    endedAt : ?Timestamp__310406396;
+    id : RouteId__454688930;
+    mobileId : MobileId__97084550;
+    officialName : Text;
+    serviceType : Text;
+    startedAt : Timestamp__310406396
+  };
+type ServiceBreakdown__1039368203 =
+  {
+    bajadaDeBandera : Pesos__425401803;
+    cantidadTag : Nat;
+    importeKilometros : Pesos__425401803;
+    importeTag : Pesos__425401803;
+    importeTiempo : Pesos__425401803;
+    kilometros : Kilometers__193750192;
+    minutos : Minutes__810978648;
+    total : Pesos__425401803
+  };
+type ServiceBreakdown__1069514542 =
+  {
+    bajadaDeBandera : Pesos__393896900;
+    cantidadTag : Nat;
+    importeKilometros : Pesos__393896900;
+    importeTag : Pesos__393896900;
+    importeTiempo : Pesos__393896900;
+    kilometros : Kilometers__677260180;
+    minutos : Minutes__626236977;
+    total : Pesos__393896900
+  };
+type ServiceId__271116140 = Nat;
+type ServiceId__320439494 = ServiceId__271116140;
+type ServiceId__641272165 = Nat;
+type Service__103523136 =
+  {
+    breakdown : ServiceBreakdown__1069514542;
+    createdAt : Timestamp__310406396;
+    domicilios : [Domicilio__983849745];
+    id : ServiceId__641272165;
+    kmEnd : Kilometers__677260180;
+    kmStart : Kilometers__677260180;
+    kmTraveled : Kilometers__677260180;
+    officialName : Text;
+    owner : Principal;
+    tagCount : Nat;
+    total : Pesos__393896900;
+    waitMinutes : Minutes__626236977
+  };
+type Service__980514341 =
+  {
+    breakdown : ServiceBreakdown__1039368203;
+    createdAt : Timestamp__980149596;
+    domicilios : [Domicilio__992855519];
+    id : ServiceId__320439494;
+    kmEnd : Kilometers__193750192;
+    kmStart : Kilometers__193750192;
+    kmTraveled : Kilometers__193750192;
+    officialName : Text;
+    owner : Principal;
+    tagCount : Nat;
+    total : Pesos__425401803;
+    waitMinutes : Minutes__810978648
+  };
+type Timestamp__168099544 = Timestamp__301639476;
+type Timestamp__301639476 = Int;
+type Timestamp__310406396 = Int;
+type Timestamp__470065763 = Timestamp__301639476;
+type Timestamp__980149596 = Timestamp__301639476;
+type UserRole__91647283 = {#admin; #guest; #user};
+{
+  "20260922_000000" : (_old : {}) -> NewActor__619974250
+}
+actor  {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__230067015<Principal, UserRole__91647283>
+    };
+  stable mobiles :
+    {
+      var root : Node__204828119<MobileId__976316653, Mobile__310070019>;
+      var size : Nat__227979830
+    };
+  stable rates : {var current : Rates__19350627};
+  stable routes :
+    {
+      var root : Node__204828119<RouteId__1014512787, Route__359719741>;
+      var size : Nat__227979830
+    };
+  stable services :
+    {
+      var root : Node__204828119<ServiceId__320439494, Service__980514341>;
+      var size : Nat__227979830
+    }
+};

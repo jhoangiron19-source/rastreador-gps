@@ -1,0 +1,22 @@
+{
+  "overview": "Aplicación de seguimiento GPS con panel de administrador y calculadora de servicios de transporte hospitalario, en español.",
+  "features": [
+    "Panel de administrador con acceso protegido",
+    "Gestión de hasta 50 móviles con nombre del funcionario y tipo de servicio",
+    "Mapa en tiempo real con la ubicación de cada móvil",
+    "Asignación de rutas y consulta de recorridos, kilómetros y tiempos",
+    "Registro automático de ubicación GPS al usar la app",
+    "Calculadora Servicios Hospital con desglose de tarifas",
+    "Domicilios múltiples con horas de llegada y salida",
+    "Servicios guardados y tarifas editables"
+  ],
+  "category": "productivity",
+  "tags": [
+    "gps",
+    "seguimiento",
+    "transporte",
+    "calculadora",
+    "administracion"
+  ],
+  "last_updated": "2026-09-22T23:21:23.319Z"
+}

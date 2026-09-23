@@ -1,0 +1,243 @@
+type Value = 
+ variant {
+   "bool": bool;
+   float: float64;
+   "int": int;
+   "nat": nat;
+   "null";
+   "text": text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type Timestamp = int;
+type ServiceSummary = 
+ record {
+   createdAt: Timestamp;
+   id: ServiceId;
+   kmTraveled: Kilometers;
+   minutes: Minutes;
+   officialName: text;
+   total: Pesos;
+ };
+type ServiceInput = 
+ record {
+   domicilios: vec Domicilio;
+   kmEnd: Kilometers;
+   kmStart: Kilometers;
+   officialName: text;
+   tagCount: nat;
+   waitMinutes: Minutes;
+ };
+type ServiceId = nat;
+type ServiceBreakdown = 
+ record {
+   bajadaDeBandera: Pesos;
+   cantidadTag: nat;
+   importeKilometros: Pesos;
+   importeTag: Pesos;
+   importeTiempo: Pesos;
+   kilometros: Kilometers;
+   minutos: Minutes;
+   total: Pesos;
+ };
+type Service = 
+ record {
+   breakdown: ServiceBreakdown;
+   createdAt: Timestamp;
+   domicilios: vec Domicilio;
+   id: ServiceId;
+   kmEnd: Kilometers;
+   kmStart: Kilometers;
+   kmTraveled: Kilometers;
+   officialName: text;
+   owner: principal;
+   tagCount: nat;
+   total: Pesos;
+   waitMinutes: Minutes;
+ };
+type RouteView = 
+ record {
+   durationMinutes: opt Minutes;
+   endedAt: opt Timestamp;
+   id: RouteId;
+   mobileId: MobileId;
+   officialName: text;
+   serviceType: text;
+   startedAt: Timestamp;
+   totalKilometers: Kilometers;
+ };
+type RouteInput = 
+ record {
+   mobileId: MobileId;
+   officialName: text;
+   serviceType: text;
+ };
+type RouteId = nat;
+type RouteFilter = 
+ record {
+   from: opt Timestamp;
+   mobileId: opt MobileId;
+   to: opt Timestamp;
+ };
+type Result__1 = 
+ variant {
+   err: Error;
+   ok;
+ };
+type Result = 
+ record {
+   hasMore: bool;
+   rows: vec vec Cell;
+ };
+type Rates = 
+ record {
+   bajadaDeBandera: Pesos;
+   porKilometro: Pesos;
+   porMinuto: Pesos;
+   porTag: Pesos;
+ };
+type Position = 
+ record {
+   latitude: float64;
+   longitude: float64;
+   recordedAt: Timestamp;
+ };
+type Pesos = nat;
+type MobileView = 
+ record {
+   id: MobileId;
+   lastLatitude: opt float64;
+   lastLongitude: opt float64;
+   lastUpdate: opt Timestamp;
+   mobileIdentifier: text;
+   officialName: text;
+   serviceType: text;
+   status: MobileStatus;
+   username: text;
+ };
+type MobileUpdate = 
+ record {
+   mobileIdentifier: text;
+   officialName: text;
+   password: opt text;
+   serviceType: text;
+   username: text;
+ };
+type MobileStatus = 
+ variant {
+   offline;
+   online;
+ };
+type MobilePositionView = 
+ record {
+   id: MobileId;
+   lastUpdate: opt Timestamp;
+   latitude: opt float64;
+   longitude: opt float64;
+   mobileIdentifier: text;
+   officialName: text;
+   status: MobileStatus;
+ };
+type MobileInput = 
+ record {
+   mobileIdentifier: text;
+   officialName: text;
+   password: text;
+   serviceType: text;
+   username: text;
+ };
+type MobileId = nat;
+type Minutes = float64;
+type Kilometers = float64;
+type Error = 
+ variant {
+   AmbiguousAttribute: record {
+                         field: text;
+                         sources: vec text;
+                       };
+   FrontendOriginMismatch: record {
+                             expected: vec text;
+                             got: text;
+                           };
+   FrontendOriginsNotConfigured;
+   MalformedCandid;
+   MissingField: text;
+   MixedSsoSources: record {
+                      otherKeys: vec text;
+                      ssoKeys: vec text;
+                    };
+   NoAttributes;
+   Stale: record {ageNs: nat;};
+   UnknownNonce;
+   UntrustedSsoSource: record {domain: text;};
+ };
+type Domicilio = 
+ record {
+   address: text;
+   arrivalTime: text;
+   departureTime: text;
+   timeAtDomicile: Minutes;
+ };
+type Cell = 
+ record {
+   name: text;
+   value: Value;
+ };
+service : {
+  _initialize_access_control: () -> ();
+  _internet_identity_sign_in_finish: () -> (Result__1);
+  _internet_identity_sign_in_start: () -> (blob);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  /// Asigna una ruta a un móvil (solo administrador).
+  assignRoute: (input: RouteInput) -> (RouteView);
+  /// Calcula el desglose de un servicio sin guardarlo (usuario firmado).
+  calculateService: (input: ServiceInput) -> (ServiceBreakdown) query;
+  /// Crea un móvil; rechaza el número 51 con error en español (solo administrador).
+  createMobile: (input: MobileInput) -> (MobileView);
+  /// Elimina un móvil existente (solo administrador).
+  deleteMobile: (id: MobileId) -> ();
+  /// Elimina un servicio guardado (usuario firmado).
+  deleteService: (id: ServiceId) -> ();
+  execute: (qJson: text) -> (Result) query;
+  /// Devuelve la documentación Markdown de la API pública del backend.
+  getApiDoc: () -> (text) query;
+  /// Devuelve el móvil vinculado al llamador firmado, o null si no tiene ninguno.
+  getCallerMobile: () -> (opt MobileView) query;
+  getCallerUserRole: () -> (UserRole) query;
+  /// Obtiene un móvil por identificador (solo administrador).
+  getMobile: (id: MobileId) -> (opt MobileView) query;
+  /// Detalle de la última posición de un móvil (solo administrador).
+  getMobilePosition: (id: MobileId) -> (opt MobilePositionView) query;
+  /// Obtiene las tarifas vigentes (usuario firmado).
+  getRates: () -> (Rates) query;
+  /// Detalle de una ruta (solo administrador).
+  getRoute: (id: RouteId) -> (opt RouteView) query;
+  /// Detalle de un servicio guardado (usuario firmado).
+  getService: (id: ServiceId) -> (opt Service) query;
+  isCallerAdmin: () -> (bool) query;
+  /// Vincula el principal del llamador al móvil con las credenciales indicadas (usuario firmado).
+  linkMobilePrincipal: (username: text, password: text) -> (MobileView);
+  /// Última posición conocida de cada móvil (solo administrador).
+  listMobilePositions: () -> (vec MobilePositionView) query;
+  /// Lista los móviles (solo administrador).
+  listMobiles: () -> (vec MobileView) query;
+  /// Consulta recorridos filtrados por móvil y rango de fechas (solo administrador).
+  listRoutes: (filter: RouteFilter) -> (vec RouteView) query;
+  /// Lista los servicios guardados del usuario (usuario firmado).
+  listServices: () -> (vec ServiceSummary) query;
+  /// Registra la posición GPS del móvil del usuario firmado.
+  registerPosition: (latitude: float64, longitude: float64) -> (Position);
+  /// Guarda un servicio calculado (usuario firmado).
+  saveService: (input: ServiceInput) -> (Service);
+  schema: () -> (text) query;
+  /// Edita un móvil existente (solo administrador).
+  updateMobile: (id: MobileId, input: MobileUpdate) -> (MobileView);
+  /// Actualiza las tarifas aplicadas a los cálculos siguientes (solo administrador).
+  updateRates: (input: Rates) -> (Rates);
+  /// Edita un servicio guardado (usuario firmado).
+  updateService: (id: ServiceId, input: ServiceInput) -> (Service);
+}
